@@ -197,15 +197,36 @@ body{
 
 /*Контент*/
 .main {
-    display: flex;
-    justify-content: center;
     margin-top: 30px;
 }
 
-.list {
+.total {
+    width: 520px;
+    display: flex;
+    margin: 0 auto;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+.total__task {
+    font-size: var(--size-bold);
+    transition: color .5s ease-in;
+}
+.total__button {
+    font-family: var(--font-kanit),sans-serif;
+    font-size: var(--size-bold);
+    padding: 10px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    transition: color .5s ease-in;
+}
+
+.list{
     width: 520px;
     display: flex;
     flex-direction: column;
+    margin: 0 auto;
 }
 
 .item {
@@ -618,5 +639,9 @@ body.dark .empty_img{
     background-image: url(./media/empty-dark.png);
 }
 body.dark .empty__text{
+    color: var(--color-white);
+}
+
+body.dark .total__task, body.dark .total__button {
     color: var(--color-white);
 }

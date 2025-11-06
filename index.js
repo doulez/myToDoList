@@ -80,6 +80,7 @@ const activeUndoButton = (item)=>{
         const nextSibling = item.nextElementSibling;
         
         item.remove();
+        updateTotalTask()
         buttonUndo.classList.add('active');
         
         let count = 5;
@@ -89,6 +90,7 @@ const activeUndoButton = (item)=>{
         const undoHandler = () => {
             if (nextSibling) {
                 nextSibling.before(deletedItem);
+                updateTotalTask()
             }else{
                 parent.append(deletedItem)
             }
@@ -203,9 +205,11 @@ function checkEmptyState() {
     if(visibleItems.length === 0) {
         mainListEl.style.display = 'none';
         empty.style.display = 'flex';
+        updateTotalTask(visibleItems.length)
     } else {
         mainListEl.style.display = 'block';
         empty.style.display = 'none';
+        updateTotalTask(visibleItems.length)
     }
 }
 
@@ -233,7 +237,7 @@ btnAddEl.addEventListener('click', ()=>{
 
 //Добавление заметки в лист
 const btnApply = document.querySelector('.btn--apply');
-let itemCounter = 4; 
+let itemCounter = 4;
 btnApply.addEventListener('click',()=>{
     let inputEl = document.querySelector('.modal__input');
     mainListEl.insertAdjacentHTML("afterbegin",`
@@ -271,7 +275,10 @@ btnApply.addEventListener('click',()=>{
     `)
     itemCounter++;
     myModal.close();
+    updateTotalTask()
+    checkEmptyState()
 })
+
 
 //Отмена добавления заметки/закрытие модального окна
 const btnCancel = document.querySelector('.btn--cancel');
@@ -375,5 +382,28 @@ buttonScheme.addEventListener('click',()=>{
     document.body.classList.toggle('dark')
 })
 
+//Показ количества задач на странице
+function updateTotalTask(length = mainListEl.children.length){
+    const total = document.querySelector('.total')
+    const totalText = total.querySelector('.total__task');
+    const totalTask = length;
+    if(length == 0){
+        total.style.display = 'none'
+    }else{
+        total.style.display = 'flex'
+    }
+    totalText.textContent = `Total Task ${totalTask}`
+}
+updateTotalTask()
 
 
+//Удаление всех задач
+const buttonDelete = document.querySelector('.total__button');
+function deleteAllTask(){
+    for(let i = mainListEl.children.length-1; i >= 0; i--){
+        mainListEl.children[i].remove()
+    }
+    checkEmptyState()
+    updateTotalTask()
+}
+buttonDelete.addEventListener('click', deleteAllTask)
